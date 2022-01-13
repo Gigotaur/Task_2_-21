@@ -1,57 +1,57 @@
+package com.company;
+
 import java.util.Scanner;
- 
+
 public class Main {
- 
+    static final String[] UNITS = new String[] {"", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять", "десять",
+            "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
+            "восемнадцать", "девятнадцать"};
+    static final String[] DOZENS = new String[]{"", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят",
+            "восемьдесят", "девяносто"};
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
- 
-        System.out.println("Введите возраст:");
+        System.out.println("Input age: ");
         int age = input.nextInt();
- 
-        System.out.printf("%s", NumInWord(age));
+        System.out.println(calculateAge(age));
     }
- 
-    static String NumInWord(int num)
-    {
-        if (num <= 0 || num > 99)
-            return "Возраст находится вне диапазона";
- 
-        String[] units = { "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять" } ;
-        String[] firstTen = { "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятьнадцать", "шестьнадцать", "семьнадцать", "восемьнадцать", "девятнадцать" } ;
-        String[] tens = { "", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто" } ;
- 
-        switch (num) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                if (num % 10 == 1){
-                    return (units[num].toString() + " год");
-                }
-                else if (num % 10 > 1 && num % 10 < 5) {
-                    return (units[num].toString() + " года");
-                }
-                else {
-                    return (units[num].toString() + " лет");
-                }
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-            case 18:
-            case 19:
-                return (firstTen[num - 10].toString() + " лет");
-            default:
-                return tens[(int) num / 10].toString() + " " + NumInWord(num % 10).toString();
+
+    static String calculateAge(int age){
+        StringBuilder stringBuilder = new StringBuilder();
+        if (age > 19){
+            stringBuilder.append(DOZENS[age / 10]);
+            if (age % 10 > 0){
+                stringBuilder.append(" ").append(UNITS[age % 10]);
+                stringBuilder.append(makeFormOfWord(age % 10));
+            }
+            if (age % 10 == 0){
+                stringBuilder.append(makeFormOfWord(age));
+            }
         }
+        else {
+            stringBuilder.append(UNITS[age]);
+            stringBuilder.append(makeFormOfWord(age));
+        }
+        return firstLetterToUpperCase(stringBuilder.toString());
+    }
+
+    static String makeFormOfWord(int age){
+        if (age > 4){
+            return " лет";
+        }
+        else if (age > 1){
+            return " года";
+        }
+        else if (age == 1){
+            return " год";
+        }
+        return "";
+    }
+
+    static String firstLetterToUpperCase(String str){
+        if (str == null || str.equals("")) {
+            return "";
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }
